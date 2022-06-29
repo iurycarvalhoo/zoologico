@@ -6,7 +6,7 @@ type Especime = {
     numeroDeSerie: number 
     apelido?: string 
     especie: Especie
-    jaula: string
+    jaula: Jaula[]
 }
 
 export default Especime 

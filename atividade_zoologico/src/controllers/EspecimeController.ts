@@ -6,41 +6,42 @@ import {Jaula} from '../models/Jaula'
 
 import Especime, { getEspecime } from '../models/Especime'
 
-export const getEspecimeEspecies = async (especies: Especie): Promise<Especime[]> => {
+export const getEspecimeEspecies = async (especies: string): Promise<Especime[]> => {
   const response = await sql`
-    SELECT * 
+    SELECT *
     FROM especime
-    INNER JOIN especie ON especime.id_especie = especie.id
-    WHERE especie.id = ${especies.id};
+    INNER JOIN especie 
+    ON especime.id_especie = especie.id
+    WHERE especie.id = ${especies};
   `;
 
-  const especime = response.map(async (jsonObject) => await getEspecime(jsonObject));
+  const especime = response.map(async (obj) => await getEspecime(obj));
 
   return await Promise.all(especime);
 }
 
-export const getEspecimeZelador = async (zelador: Zelador): Promise<Especime[]> => {
+export const getEspecimeZelador = async (zelador: string): Promise<Especime[]> => {
   const response = await sql`
-    SELECT * FROM especime
-      INNER JOIN jaula ON especime.id_jaula = jaula.codigo
-      WHERE codigo = ${zelador.matricula};
+      SELECT * 
+      FROM especime
+      INNER JOIN jaula_zelador
+      ON especime.id_jaula = jaula_zelador.id_jaula
+      WHERE jaula_zelador.id_zelador LIKE ${zelador};
   `;
 
-  const especime = response.map(async (jsonObject) => await getEspecime(jsonObject));
+  const especime = response.map(async (obj) => await getEspecime(obj));
 
   return await Promise.all(especime);
 }
 
-export const getEspecimeJaula = async (jaula: Jaula): Promise<Especime[]> => {
+export const getEspecimeJaula = async (jaula: string): Promise<Especime[]>=>{
   const response = await sql`
-    SELECT especime.id, especime.nro_de_serie, especime.apelido, especime.id_especie, especime.id_jaula
-      FROM zelador
-      INNER JOIN jaula_zelador ON zelador.matricula = jaula_zelador.id_zelador
-      INNER JOIN especime ON especime.id_jaula = jaula_zelador.id_jaula
-      WHERE matricula LIKE ${jaula.codigo};
+      SELECT *
+      FROM especime
+      WHERE id_jaula = ${jaula}
   `;
 
-  const especime = response.map(async (jsonObject) => await getEspecime(jsonObject));
+  const espec = response.map(async (obj) => await getEspecime(obj));
   
-  return await Promise.all(especime);
+  return await Promise.all(espec);
 }

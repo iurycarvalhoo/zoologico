@@ -1,30 +1,33 @@
 import sql from "../config/db"
-import { getEspecie } from "../models/Especie"
+import { Especie, getEspecie } from "../models/Especie"
 
-export const getEspeciebyHabitat = async (habitat: string) => {
+export const getEspecieHabitat = async (habitat: string) => {
 
     const habitatEsp = '%' + habitat + '%'
     const response = await sql`
-        SELECT * FROM especie WHERE habitat LIKE ${habitatEsp}
+        SELECT * 
+        FROM especie 
+        WHERE habitat ILIKE ${habitatEsp}
     `
 
-    const especies = response.map((jsonObject) => getEspecie(jsonObject));
+    const especies = response.map((obj) => getEspecie(obj));
 
-    console.log(especies)
-    return especies;
+    //console.log(especies)
+    return especies[0];
 }
 
-export const getEspeciebyScientificName = async (NomeCient: string) => {
+export const getEspecieNomeCientifico = async (NomeCient: string) : Promise<Especie>=> {
 
 
-    const scientificName = '%' + NomeCient+ '%'
+    const nomeCienti = '%' + NomeCient+ '%'
 
     const response = await sql`
-        select * from especie where nome_cientifico ilike ${scientificName}
+        SELECT * 
+        FROM especie 
+        WHERE nome_cientifico ILIKE ${nomeCienti}
     `
 
-    const especies = response.map( jsonObject=> getEspecie(jsonObject))
+    const especies = response.map( obj=> getEspecie(obj))
 
-    console.log(especies)
-    return especies
+    return especies[0]
 }

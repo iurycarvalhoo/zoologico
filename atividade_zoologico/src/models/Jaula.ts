@@ -1,4 +1,4 @@
-import { getZeladorByJaulaCodigo } from "../controllers/jaulaController"
+import { getZeladorbyJaulaID } from "../controllers/ZeladorController"
 import { Zelador } from "./Zelador"
 
 export type Jaula = {
@@ -10,7 +10,7 @@ export type Jaula = {
 export const getJaula = async (obj: any): Promise<Jaula> => {
     const {codigo, area } = obj
     
-    const zeladoresResponsaveis = await getZeladorByJaulaCodigo(codigo)
+const zeladoresResponsaveis = await getZeladorbyJaulaID(codigo)
 
     const jaula: Jaula = {
         codigo,

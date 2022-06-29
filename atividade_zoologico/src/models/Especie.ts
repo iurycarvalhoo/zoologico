@@ -10,21 +10,20 @@ export type Especie= {
 export const getEspecie= (obj:any): Especie =>{
     const{
         id,
-        nomeCientifico,
-        nomePopular,
+        nome_cientifico,
+        nome_popular,
         habitat,
         familia,
         ordem
     }=obj
 
-
     const especie: Especie={
         id,
+        nomeCientifico:nome_cientifico,
+        nomePopular:nome_popular,
         habitat,
         familia,
-        ordem,
-        nomeCientifico:nome_cientifico,
-        nomePopular:nome_popular
+        ordem
     }
 
     return especie

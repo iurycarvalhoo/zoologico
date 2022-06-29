@@ -27,3 +27,17 @@ export const getZeladorJaula = async (jaula: Jaula): Promise<Zelador[]> => {
 
   return await Promise.all(zelador);
 }
+
+export const getZeladorbyJaulaID = async (id: string): Promise<Zelador[]> => {
+  const response = await sql`
+    SELECT zelador.matricula, zelador.nome, zelador.data_nascimento
+      FROM zelador
+      INNER JOIN jaula_zelador ON zelador.matricula = jaula_zelador.id_zelador
+      WHERE id_jaula = ${id}
+      GROUP BY zelador.matricula;
+  `;
+  
+  const zeladores = response.map((obj) => getZelador(obj));
+
+  return zeladores;
+}

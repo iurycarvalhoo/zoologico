@@ -8,7 +8,8 @@ import {
   zeladores,
 } from '../data/zoo.json'
 
-const sql = postgres('postgres://ifms:12345@localhost:5432/zoo')
+//const sql = postgres('postgres://ifms:12345@localhost:5432/zoo')
+const sql = postgres('postgres://postgres:postgres@localhost:5432/zoo')
 
 export const createTables = async () => {
   await sql`
